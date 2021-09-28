@@ -1,17 +1,17 @@
 import React from 'react'
 import {createAnec} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch} from 'react-redux'
+import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (anecdote) => {
   const dispatch = useDispatch()
 
   //Vote
-  const vote = (id) => {
-      console.log('vote', id)
-      dispatch({
-        type: 'VOTE',
-        id: id
-      })
+  const vote = (id, anecdote) => {
+      const newObj = anecdote
+      dispatch(voteAnecdote(id,newObj))
+      dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
   }
 
   //Filter anecdotes
@@ -41,7 +41,7 @@ const AnecdoteList = (anecdote) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote)}>vote</button>
           </div>
         </div>
       )}  
